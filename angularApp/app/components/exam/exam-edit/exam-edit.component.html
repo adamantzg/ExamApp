@@ -1,0 +1,81 @@
+<app-errormessage [errorMessage]="errorMessage"></app-errormessage>
+<h4>{{title}}</h4>
+<div class="mt-2 mb-2">
+    <button class="btn btn-success" (click)="save()">Save</button> 
+    <button class="btn btn-warning ml-2" (click)="cancel()">Cancel</button>
+</div>
+<tabset>
+    <tab heading="Basic data">
+        <div class="form-group row mt-2">
+            <label class="col-sm-2 col-form-label">Name:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" [(ngModel)]="model.exam.title">
+            </div>
+            <label class="col-sm-2 col-form-label">Max. time (min):</label>
+            <div class="col-sm-4">
+                <!-- <input type="text" class="form-control" [(ngModel)]="model.exam.maxTime"> -->
+                <timepicker [(ngModel)]="model.exam.duration" [showMeridian]="false" [showSpinners]="false"></timepicker>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Start date/time:</label>
+            <div class="col-sm-2">
+                <input type="text" bsDatepicker class="form-control" [(ngModel)]="model.exam.startDateTime">
+            </div>
+            <div class="col-sm-2">
+                <timepicker [(ngModel)]="model.exam.startDateTime" [showMeridian]="false" [showSpinners]="false"></timepicker>
+            </div>
+            <label class="col-sm-2 col-form-label">Type:</label>
+            <div class="col-sm-4">
+                <select class="form-control" [(ngModel)]="model.exam.idType">
+                    <option *ngFor="let t of model.examTypes" [value]="t.id">{{t.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Course:</label>
+            <div class="col-sm-4">
+                <select class="form-control" [(ngModel)]="model.exam.idCourse">
+                    <option *ngFor="let c of model.courses" [value]="c.id">{{c.name}}</option>
+                </select>
+            </div>
+            <label class="col-sm-2 col-form-label">Database:</label>
+            <div class="col-sm-4">
+                <select class="form-control" [(ngModel)]="model.exam.idDatabase">
+                    <option *ngFor="let d of model.databases" [value]="d.id">{{d.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-2">
+                <input type="checkbox" [(ngModel)]="model.exam.randomOrder"> Random order
+            </div>
+            <div class="col-sm-2">
+                <input type="checkbox" [(ngModel)]="model.exam.showResults"> Show results to students
+            </div>
+            <div class="col-sm-2">
+                <input type="checkbox" [(ngModel)]="model.exam.timeConstrained"> Time constrained
+            </div>
+            <div class="col-sm-2">
+                <input type="checkbox" [(ngModel)]="model.exam.userSpecificDb"> User specific db
+            </div>
+        </div>
+        
+        <div class="mt-2">
+            <button class="btn btn-primary" (click)="addQuestion()">
+                <fa-icon [icon]="faPlus"></fa-icon>
+            </button>
+        </div>
+        <div class="mt-2">
+            <app-question-edit-header></app-question-edit-header>
+            <app-question-edit *ngFor="let q of model.exam.questions | orderBy: 'orderNo', let i = index" [indexNo]="i"
+             [question]="q" [questionEditModel]="questionModel" (onOrderChange)="onQuestionOrderChange($event)" (onDelete)="onQuestionDelete($event)"
+             [onCheckButtonVisibility]="checkMoveButtonVisible">
+
+            </app-question-edit>
+        </div>
+    </tab>
+    <tab heading="Students">
+        <app-grid [data]="model.users" [definition]="userGridDefinition"></app-grid>
+    </tab>
+</tabset>

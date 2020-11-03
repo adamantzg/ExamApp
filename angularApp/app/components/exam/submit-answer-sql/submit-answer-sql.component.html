@@ -1,0 +1,8 @@
+<div class="mt-2">
+    <app-submit-answer-commandbar *ngIf="!readOnly" (commandSelected)="onCommandBarCommand($event)"></app-submit-answer-commandbar>
+    <textarea class="form-control" [readOnly]="readOnly || forReview" [(ngModel)]="answer.answerText" rows="8" #answerArea></textarea>
+</div>
+<div class="mt-2" *ngIf="!readOnly">
+    <app-submit-answer-sql-results *ngIf="answer.answerText" [submissionAnswer]="answer"  [idExam]="idExam" 
+    [showResults]="!forReview"></app-submit-answer-sql-results>
+</div>

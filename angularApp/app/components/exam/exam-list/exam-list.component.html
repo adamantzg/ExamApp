@@ -1,0 +1,11 @@
+
+<div class="container">
+    <h3>List of exams</h3>
+    <button class="btn btn-info btn-sm" (click)="addNew()">
+        <fa-icon [icon]="faPlusSq"></fa-icon> Add new
+    </button>
+    <div class="mt-2">
+        <app-grid [data]="exams" [definition]="gridDefinition" (ButtonClicked)="gridButtonClicked($event)"></app-grid>
+    </div>
+</div>
+

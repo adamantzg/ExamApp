@@ -1,0 +1,45 @@
+<div class="row mt-2">
+    <div style="width: 30px">{{indexNo + 1}}. </div>
+    <div class="col-sm-5">
+        <textarea rows="5" class="form-control" [(ngModel)]="question.questionText"></textarea>
+    </div>
+    <div class="col-sm-1">
+        <select class="form-control" [(ngModel)]="question.idType">
+            <option *ngFor="let t of questionEditModel?.questionTypes" [value]="t?.id">
+                {{t?.name}}
+            </option>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <select class="form-control" [(ngModel)]="question.idDatabase">
+            <option value="">Not set</option>
+            <option *ngFor="let d of questionEditModel?.databases" [value]="d?.id">
+                {{d?.name}}
+            </option>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <input type="text" class="form-control" [(ngModel)]="question.records">
+    </div>
+    <div class="col-sm-1">
+        <input type="text" class="form-control" [(ngModel)]="question.points">
+    </div>
+    <div class="col-sm-2">
+        <button class="btn btn-danger" (click)="delete()">Delete</button>
+        <button class="btn btn-info ml-2" *ngIf="showUp()" (click)="moveUp()"><fa-icon [icon]="faArrowUp"></fa-icon></button>
+        <button class="btn btn-info ml-2" *ngIf="showDown()" (click)="moveDown()"><fa-icon [icon]="faArrowDown"></fa-icon></button>
+    </div>
+</div>
+<div class="row mt-2" *ngIf="question.idType == types.group">
+    
+    <div style="width: 60px;">
+
+    </div>
+    <div class="col-sm-11">
+        <button class="btn btn-primary mt-2 mb-2" (click)="addChild()">Add</button>
+        <app-question-edit *ngFor="let q of question.children | orderBy: 'orderNo', let i = index" [indexNo]="i"
+        [question]="q" [questionEditModel]="questionEditModel" (onOrderChange)="onChildOrderChange($event)" 
+        (onDelete)="onChildDelete($event)"
+        [onCheckButtonVisibility]="checkMoveButtonVisible"></app-question-edit>
+    </div>
+</div>

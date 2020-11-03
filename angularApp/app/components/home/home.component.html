@@ -1,0 +1,8 @@
+<div class="container">
+    <app-errormessage [errorMessage]="errorMessage"></app-errormessage>
+    <div class="mt-4" *ngIf="user">
+        Welcome, {{user?.name}} {{user?.lastname}}
+    </div>
+    
+</div>
+

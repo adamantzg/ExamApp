@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="d-flex justify-content-between">
+        <h3>{{exam?.title}}</h3>        
+        <h4>Database: {{exam?.database?.name}}</h4>
+    </div>    
+    
+    <div class="mt-2 d-flex justify-content-between">
+        <div>
+            <h4>Question no: {{currentIndex+1}}</h4>
+        </div>        
+        <div> Records: {{currentQuestion?.records}} Points: {{currentQuestion?.points}} Awarded: {{getAwardedPoints(currentQuestion)}}</div>
+    </div>
+    <ng-container *ngTemplateOutlet="buttonBar">
+    </ng-container>
+    <div class="mt-2">
+        <div #questionDiv class="mb-2">{{currentQuestion?.questionText}}</div>
+        <ng-container *ngIf="currentQuestion?.idType == questionTypes.sql || currentQuestion?.idType == questionTypes.sqlAction">
+            <app-submit-answer-sql [readOnly]="true" [answer]="currentQuestion?.submissionAnswer" [idExam]="exam.id"></app-submit-answer-sql>
+        </ng-container>
+        <ng-container *ngIf="currentQuestion?.idType == questionTypes.group">
+            <ng-container *ngFor="let cq of currentQuestion.children">                    
+                <app-question-label [text]="cq?.questionText"></app-question-label>
+                <app-submit-answer-sql  [answer]="cq?.submissionAnswer" [readOnly]="true"
+                [idExam]="exam?.id"></app-submit-answer-sql>
+                <div> Points awarded: {{getAwardedPoints(cq)}}/{{cq.points}}</div>
+            </ng-container>                
+        </ng-container>
+    </div>
+    <ng-container *ngTemplateOutlet="buttonBar">
+    </ng-container>
+    <ng-template #buttonBar>
+        <div class="mt-2">
+            <div class="d-flex justify-content-between">
+                <div><button class="btn btn-sm btn-primary" *ngIf="showPrevious()" (click)="previous()">Previous</button></div>
+                <div>
+                    <button class="btn btn-sm btn-primary" *ngIf="showNext()" (click)="next()">Next</button>                    
+                    <button class="btn btn-sm btn-warning ml-2" (click)="quit()">Back to list</button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</div>
+
+

@@ -1,0 +1,7 @@
+<div class="container mt-2">
+    <h3>Submissions</h3>
+    <div>Number of questions: {{model?.questions}} Total points: {{model?.totalPoints}}</div>
+    <a class="btn btn-sm btn-info mb-2" [routerLink]="'/exams'">Back</a>
+    <app-errormessage [errorMessage]="errorMessage" ></app-errormessage>
+    <app-grid [data]="model?.submissions" [definition]="definition" (ButtonClicked)="gridButtonClicked($event)"></app-grid>
+</div>

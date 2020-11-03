@@ -1,0 +1,50 @@
+.admin-row{
+    margin-top:15px;
+    margin-bottom: 25px;
+}
+.inactive-read{
+    display: none!important;
+}
+.active-input{
+    display: block!important;
+}
+.input{
+    display: none;
+}
+.btn-default[disabled]{
+    background-color:#95a5a6;
+}
+/* .tbl-column{
+    width: 14.285%;
+} */
+.locked-cell{
+    /* text-align: center; */
+    padding-top:16px!important;
+}
+.has-error{
+    border-color:darkred;
+    background: #e74c3c;
+}
+.has-error::placeholder{
+    /* color: rgb(252, 157, 157); */
+    color:white;
+    font-weight:600;
+}
+button {
+    margin-right: 3px;
+}
+.btn-xs {
+    margin-right: 2px;
+}
+
+/* CHECK BOX */
+/* input[type="checkbox"] {
+    margin: 11px 0 0;
+   
+    line-height: normal;
+} */
+
+
+
+
+

@@ -1,0 +1,35 @@
+<!-- <ng-template #inputUser [(user)]="user">
+    <h1>Template</h1>
+ </ng-template> -->
+
+
+<div class="container-fluid" style="height: 100%">
+
+  <div class="alert alert-danger" *ngIf="errorMessage">{{errorMessage}}</div>
+  <div class="alert alert-success" *ngIf="successMessage">{{successMessage}}</div>
+  <div class="row admin-row">
+    <div class="col-sm-12">
+      <button class="btn btn-info btn-sm" (click)="addNew()" [disabled]="editMode != editModes.NoEdit">
+        <fa-icon [icon]="faPlusSquare"></fa-icon> Add new
+      </button>
+      <!-- <button class="btn btn-secondary btn-sm" (click)="assignCourseGroup()" [disabled]="editMode != editModes.NoEdit">
+        Assign course/group
+      </button> -->
+    </div>
+  </div>
+  <div class="col-sm-12">
+   
+  </div>
+  <div class="row" style="height: 100%">
+    <div class="col-sm-12" style="height: 100%">
+        <app-grid [definition]="gridDefinition" [data]="users" [css]="'table table-striped'" (ButtonClicked)="gridButtonClicked($event)"
+        [editMode]="editMode" [editedRow]="userCopy" (SortChange)="onSortChanged($event)"></app-grid>
+        
+    </div>
+
+  </div>
+  <!--<ng-template #editRow>Please Edit</ng-template>-->
+
+
+
+</div>

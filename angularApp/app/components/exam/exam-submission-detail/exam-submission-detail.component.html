@@ -1,0 +1,64 @@
+<div class="container mt-2">
+    <h3>Submission for {{submission?.user?.lastname}} Time started: {{submission?.timeStarted | date:dateFormat}} 
+        Submitted: {{submission?.timeSubmitted | date:dateFormat}}</h3>
+    <div class="d-flex mb-2">
+        <div>Total points: {{getPoints()}}/{{totalPoints}} </div>
+        <a class="ml-2 btn btn-success btn-sm" (click)="update()">Update</a>
+        <a class="ml-2 btn btn-sm btn-info" [routerLink]="['/examsubmissions', {id: submission?.idExam} ]">Back</a>
+    </div>    
+    <app-errormessage [errorMessage]="errorMessage" ></app-errormessage>
+    <app-answer-log-visualizer [data]="visualizerData" ></app-answer-log-visualizer>
+    <div class="mt-2 d-flex justify-content-between">
+        <div>
+            <h4>Question no: {{currentIndex+1}}</h4>
+        </div>        
+        <div> Records: {{currentAnswer?.question?.records}} Total points: {{currentAnswer?.question?.points}}</div>
+        <div class="input-group" *ngIf="currentAnswer" style="width: 20%;">
+            <label class="ml-2 mr-2">Points: </label>
+            <input type="number" step="0.5" [(ngModel)]="currentAnswer.points" class="form-control">
+        </div>        
+    </div>
+    <ng-container *ngTemplateOutlet="buttonBar">
+    </ng-container>
+    
+    <div class="mt-2" *ngIf="currentAnswer">
+        <ng-container *ngIf="currentAnswer?.question?.idType != questionTypes.group">
+            <div #questionDiv class="mb-2">{{currentAnswer?.question?.questionText}}</div>
+            <app-submit-answer-sql [answer]="currentAnswer" [idExam]="submission?.idExam" [readOnly]="true"></app-submit-answer-sql>        
+            <div *ngIf="currentAnswer?.question?.idType == questionTypes.sql">Total records: {{currentAnswer?.totalRecords}}</div>
+        </ng-container>        
+        <ng-container *ngIf="currentAnswer?.question?.idType == questionTypes.group">
+            <div #questionDiv class="mb-2">{{currentAnswer?.question?.questionText}}</div>
+            <ng-container *ngFor="let ca of currentAnswer?.childAnswers | orderBy:'question.orderNo'">
+                <div class="d-flex justify-content-between mt-2">
+                    <div class="mb-2">{{ca?.question?.questionText}}</div>
+                    <div class="form-inline">
+                        <label>Points: {{ca?.question?.points}}</label>
+                        <input type="number" step="0.5" [(ngModel)]="ca.points" (change)="calculatePoints()" class="form-control ml-2">
+                    </div>                    
+                </div>                
+                <app-submit-answer-sql [answer]="ca" [idExam]="submission?.idExam" [readOnly]="true"></app-submit-answer-sql>        
+                <div *ngIf="ca?.question?.idType == questionTypes.sql">Total records: {{ca?.totalRecords}}</div>
+            </ng-container>
+        </ng-container>
+    </div>
+    <ng-container *ngTemplateOutlet="buttonBar">
+    </ng-container>
+    <button class="btn btn-sm btn-warning mb-2 mt-2" (click)="showFullLog()">Show log</button>
+    <div style="font-size: 0.8em;">
+        <app-answer-log-list *ngIf="currentAnswer && dictAnswerLogs[currentAnswer.id].shown" [data]="currentAnswer?.logs"></app-answer-log-list>
+    </div>
+    
+    
+</div>
+<ng-template #buttonBar>
+    <div class="mt-2">
+        <div class="d-flex justify-content-between">
+            <div><button class="btn btn-sm btn-primary" *ngIf="showPrevious()" (click)="previous()">Previous</button></div>
+            <div>
+                <button class="btn btn-sm btn-primary" *ngIf="showNext()" (click)="next()">Next</button>                
+            </div>
+        </div>
+    </div>
+</ng-template>
+

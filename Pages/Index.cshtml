@@ -1,0 +1,49 @@
+﻿@page
+@using ExamApp.Pages
+@using System.IO
+@{
+    Layout = null;
+    var jsFolder = "dev";
+}
+@model IndexModel
+
+<!doctype html>
+<html>
+<head>
+    <base href="/">
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Exams</title>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <link rel="stylesheet" href="https://unpkg.com/ngx-bootstrap/datepicker/bs-datepicker.css">
+    @*<environment names="Development">
+            @{
+            jsFolder = "dev";
+            }
+        </environment>*@
+    <title>Exams</title>
+    @{
+
+        var files = Directory.GetFiles(System.IO.Path.Combine(Model.WebRoot, jsFolder), "*.css");
+
+        foreach (var f in files)
+        {
+        <link rel="stylesheet" href="~/dist/@(System.IO.Path.GetFileName(f))" />
+        }
+    }
+</head>
+<body class="app">
+    <!-- App Loading... -->
+    <app-component></app-component>
+    @{
+        var jsFiles = Directory.GetFiles(System.IO.Path.Combine(Model.WebRoot, jsFolder), "*.js")
+        .OrderBy(f => f.Contains("runtime") ? -1 : f.Contains("polyfills") ? 0 : f.Contains("vendor") ? 1 : 2).ToArray();
+
+        foreach (var f in jsFiles)
+        {
+            <script src="~/@jsFolder/@(System.IO.Path.GetFileName(f))" type="module"></script>
+        }
+    }
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": []
+  },
+  "files": [
+    "angularApp/main.ts",
+    "angularApp/polyfills.ts"
+  ],
+  "include": [
+    "angularApp/**/*.d.ts"
+  ]
+}

@@ -1,0 +1,5 @@
+<div class="container" #container>
+    <div *ngFor="let b of blocks" style="position: absolute;" [ngStyle]="{width: b.width, left: b.left, height: height, 'background-color': b.color}" 
+    [title]="b.description">
+    </div>
+</div>

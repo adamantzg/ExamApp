@@ -1,0 +1,43 @@
+<div class="mt-2 mb-2 d-flex justify-content-between">
+    <button class="btn btn-success" (click)="execute()">Execute</button>
+    <div *ngIf="submissionAnswer?.question?.idType == questionTypes.sql || submissionAnswer.questionType == questionTypes.sql">
+        Total records: {{totalRecords}} <span *ngIf="showResults && totalRecords > topRecords"> Showing first {{topRecords}} records</span>
+    </div>
+</div>
+<app-errormessage [errorMessage]="errorMessage"></app-errormessage>
+<div class="mt-2" *ngIf="submissionAnswer?.question?.idType == questionTypes.sqlAction || submissionAnswer.questionType == questionTypes.sqlAction">
+    <div class="alert alert-info" *ngIf="executed">
+        Command(s) completed successfully. <span *ngIf="totalRecords >= 0">{{totalRecords}} rows affected.</span> 
+    </div>
+</div>
+<div class="mt-2" *ngIf="showResults && (submissionAnswer?.question?.idType == questionTypes.sql || results?.length > 0)">
+    <ng-container *ngTemplateOutlet="resultsTemplate;context:{$implicit: fieldNames, results: results}"></ng-container>
+</div>
+
+<div class="mt-2" *ngIf="showResults && resultsMultiple?.length > 0">    
+    <ng-container *ngFor="let res of resultsMultiple, let i = index">
+        <div>Total records: {{res.length}} <span *ngIf="showResults && res.length> topRecords"> Showing first {{topRecords}} records</span></div>
+        <ng-container *ngTemplateOutlet="resultsTemplate;context:{$implicit: fieldNamesMultiple[i], results: res.slice(0,topRecords)}"></ng-container>
+    </ng-container>
+</div>
+
+
+<ng-template #resultsTemplate let-fieldNames let-results="results">
+    <table class="table-sm table-bordered table-responsive">
+        <thead>
+            <tr>
+                <th *ngFor="let n of fieldNames">{{n}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let r of results">
+                <td *ngFor="let n of fieldNames">
+                    {{r[n]}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</ng-template>
+
+
+

@@ -1,0 +1,57 @@
+<div class="container">
+    <app-errormessage [errorMessage]="errorMessage"></app-errormessage>
+    <div class="d-flex justify-content-between">
+        <h3>{{exam?.title}}</h3>
+        <div class="remainingTime" [ngClass]="timeCss">{{remainingTime}}</div>                    
+        <h4>Database: {{exam?.database?.name}}</h4>
+    </div>    
+    <div>
+        <div class="d-flex">
+            <div *ngIf="lastSaved">{{lastSaved}}</div> 
+            <button class="ml-2 btn btn-sm btn-primary" (click)="save()">Save</button>
+        </div>
+        <ng-container *ngTemplateOutlet="buttonBar">
+        </ng-container>
+        <div class="mt-2 d-flex justify-content-between">
+            <div>
+                <h4>Question no: {{currentIndex+1}}</h4>
+            </div>        
+            <div> <span *ngIf="currentQuestion?.idType == questionTypes.sql">Records: {{currentQuestion?.records}}</span> Points: {{currentQuestion?.points}}</div>
+        </div>
+        <div class="mt-2">
+            <app-question-label [text]="currentQuestion?.questionText"></app-question-label>
+            <ng-container *ngIf="currentQuestion?.idType == questionTypes.sql || currentQuestion?.idType == questionTypes.sqlAction">
+                <app-submit-answer-sql [answer]="currentQuestion?.submissionAnswer" [idExam]="exam?.id"></app-submit-answer-sql>
+            </ng-container>
+            <ng-container *ngIf="currentQuestion?.idType == questionTypes.group">
+                <ng-container *ngFor="let cq of currentQuestion.children | orderBy:'orderNo'">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <app-question-label [text]="cq?.questionText"></app-question-label>
+                        </div>
+                        <div><span *ngIf="cq?.idType == questionTypes.sql">Records: {{cq?.records}}</span> 
+                            Points: {{cq?.points}}</div>    
+                        </div>                    
+                    <app-submit-answer-sql  [answer]="cq?.submissionAnswer" 
+                    [idExam]="exam?.id"></app-submit-answer-sql>
+                </ng-container>                
+            </ng-container>
+        </div>
+        <ng-container *ngTemplateOutlet="buttonBar">
+        </ng-container>
+        <ng-template #buttonBar>
+            <div class="mt-2">
+                <div class="d-flex justify-content-between">
+                    <div><button class="btn btn-sm btn-primary" *ngIf="showPrevious()" (click)="previous()">Previous</button></div>
+                    <div>
+                        <button class="btn btn-sm btn-primary" *ngIf="showNext()" (click)="next()">Next</button>
+                        <button class="btn btn-sm btn-primary ml-2" (click)="submit()">Submit</button>
+                        <button class="btn btn-sm btn-warning ml-2" (click)="quit()">Quit</button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+    
+</div>
+
